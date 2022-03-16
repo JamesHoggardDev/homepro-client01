@@ -57,8 +57,8 @@ export default function App() {
         <Route path="/" user={cont.user} element={<Home />} handleLogout={handleLogout} isLoggedIn={cont.isLoggedIn} onClick={handleClick} />
         <Route path="/login" user={cont.user} element={<Login />} isLoggedIn={cont.isLoggedIn} handleLogin={handleLogin} handleLogout={handleLogout} onClick={handleClick}/>
         <Route path="/user" user={cont.user} element={<User />} isLoggedIn={isLoggedIn} />
-        {/* <Route path="/signup" user={cont.user} element={<Signup />} isLoggedIn={isLoggedIn} />
-        <Route path="/about"  user={cont.user} element={<About />} isLoggedIn={isLoggedIn} /> */}
+        <Route path="/signup" user={cont.user} element={<Signup />} isLoggedIn={isLoggedIn} />
+        <Route path="/about"  user={cont.user} element={<About />} isLoggedIn={isLoggedIn} />
       </Routes>
     </div>
   );

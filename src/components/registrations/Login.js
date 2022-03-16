@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, errors, setErrors }) {
   
   const [formData, setFormData] = useState({ username: "", email: "", password: "", errors: "" });
-  // const [user, setUser] = useState({});
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +31,6 @@ function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, err
       .then(res => {
         if (res.data.logged_in) {
           // console.log(res.data.user)
-          handleLogin(res.data)
           redirect(res.data)
         } else {
           setErrors(res.data.errors)
@@ -40,8 +39,10 @@ function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, err
       .catch(error => console.log('api errors', error));
   };
   const redirect = (data) => {
+    // console.log(data)
+    setUser(data); 
     console.log(data)
-    navigate('/user')
+    navigate('/user', { state: data })
   };
   const handleErrors = () => {
     return (
@@ -109,6 +110,8 @@ function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, err
           </li>
          </button>
       </div>
+
+      <div/>
     </div>
   );
 };
