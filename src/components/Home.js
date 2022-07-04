@@ -19,26 +19,21 @@ const Home = ({ handleClick }) => {
           <Link to="/signup">Signup</Link>
         </nav>
         < br />
-        
         < br />
         <nav>
           <Link to="/about">About</Link>
         </nav>
 
       </main>
-
-      
       <br></br>
       <nav>
         <Link to='/signup'>Sign Up</Link>
       </nav>
       
       < hr/>
-
       <div>
         
       </div>
-
     </div>
   );
 };

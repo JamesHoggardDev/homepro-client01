@@ -1,22 +1,28 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import ExerCard from './ExerCard';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import List from './List';
 
-export default function User() {
+export default function User({exercises}) {
   let location = useLocation();
   const user = location.state.user;
   const { lists } = user;
-  console.log(lists);
+  let userList = user.lists;
 
   return (
     <div>
       <h1>User</h1>
-      <main>Welcome to Your User Page</main>
-
+      <main>Welcome to Your Page </main>
+        <h1>
+          {user.username.toUpperCase()}
+        </h1>
+      <br></br>
+      <hr></hr>
       <div>
-        {user.username}
+        <List user={user} exercises={exercises} />
+  
       </div>
-
       <br></br>
       <hr></hr>
 

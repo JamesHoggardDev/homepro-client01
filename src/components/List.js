@@ -1,21 +1,24 @@
-import React from 'react'
+import React from 'react';
+import ExerCard from './ExerCard';
 
-function List() {
+function List({user, exercises}) {
   return (
     <div>
       <h1>List</h1>
-
-      <div className="exerCard" key={list.id}>
-
-        <img className="exerImage" src={list.image} alt="image" />
-        <br />
-        <h2 className="exerName">{list.frequency}</h2>
-        <br></br>
-        <p className="exerDescr"> {list.description}</p>
-
-       </div>
+      <ul>{
+        exercises.map((exercise) => {
+          return (
+            <ExerCard
+              key={exercise.id}
+              exercise={exercise}
+              description={exercise.description}
+              image={exercise.image}
+              frequency={exercise.frequency}
+            />
+          ) 
+        })}
+      </ul>
     </div>
-   
   );
 };
 export default List;

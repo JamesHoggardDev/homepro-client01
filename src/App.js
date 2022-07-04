@@ -10,8 +10,10 @@ import About from './components/About';
 
 export default function App() {
   const [cont, setCont] = useState({ isLoggedIn: false, user: {} });
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [errors, setErrors] = useState([])
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [exercises, setExercises] = useState([]);
+  const [lists, setLists] = useState([]);
 
   useEffect(() => {
     loginStatus();
@@ -22,7 +24,6 @@ export default function App() {
       { withCredentials: true })
       .then(res => {
         if (res.data) {
-          // console.log(res.data)
           handleLogin(res.data)
         } else {
           console.log('NOT res.data')
@@ -46,20 +47,50 @@ export default function App() {
     });
   };
 
+  useEffect(() => {
+    axios.get('http://localhost:3001/exercises')
+      .then((res) => {
+        const exerBase = res.data
+        setExercises(exerBase);
+        renderSome(exerBase);
+      })
+  }, []);
+  
+  useEffect(() => {
+    axios.get('http://127.0.0.1:3001/lists')
+      .then((resp) => {
+        for (let i = 0; i < resp.data.length; i++) {
+        }
+        setLists(resp.data)
+      })
+  }, [exercises]);
+
+  const filterLists = lists.slice(1, 7);
+  let justNums = filterLists.map(a => a.exercise_id);
+
+  function renderSome(exercises) {
+    let someExercises = [];
+    for (let i = 0; i < justNums.length; i++) {
+      let found = exercises.filter((exercise) => exercise.id === (justNums[i]));
+      someExercises.push(found[0]);
+    }
+    setExercises(someExercises);
+  };
+
   function handleClick() {
     handleLogout();
   };
-
   return (
     <div className="App">
       <h1>Welcome</h1>
       <Routes>
         <Route path="/" user={cont.user} element={<Home />} handleLogout={handleLogout} isLoggedIn={cont.isLoggedIn} onClick={handleClick} />
-        <Route path="/login" user={cont.user} element={<Login />} isLoggedIn={cont.isLoggedIn} handleLogin={handleLogin} handleLogout={handleLogout} onClick={handleClick}/>
-        <Route path="/user" user={cont.user} element={<User />} isLoggedIn={isLoggedIn} />
-        <Route path="/signup" user={cont.user} element={<Signup />} isLoggedIn={isLoggedIn} />
-        <Route path="/about"  user={cont.user} element={<About />} isLoggedIn={isLoggedIn} />
+        <Route path="/login" user={cont.user} element={<Login exercises={exercises}/>} isLoggedIn={cont.isLoggedIn} handleLogin={handleLogin} handleLogout={handleLogout} onClick={handleClick} />
+        <Route path="/user" user={cont.user} element={<User exercises={exercises}/>} isLoggedIn={isLoggedIn} lists={lists}  />
+        <Route path="/signup" user={cont.user} element={<Signup />} isLoggedIn={isLoggedIn} setErrors={setErrors} />
+        <Route path="/about" user={cont.user} element={<About />} isLoggedIn={isLoggedIn} />
       </Routes>
     </div>
   );
-};
+}
+

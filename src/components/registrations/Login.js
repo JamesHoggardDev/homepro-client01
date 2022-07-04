@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, errors, setErrors }) {
-  
+function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, errors, setErrors, exercises }) {
+  console.log(exercises)
   const [formData, setFormData] = useState({ username: "", email: "", password: "", errors: "" });
+  const [myExers, setMyExers] = useState([]);
   const [user, setUser] = useState({});
   const navigate = useNavigate();
 
@@ -26,11 +27,12 @@ function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, err
       username: username,
       email: email,
       password: password
+      
     };
     axios.post('http://localhost:3001/login', { user }, { withCredentials: true })
       .then(res => {
         if (res.data.logged_in) {
-          // console.log(res.data.user)
+          console.log(res.data)
           redirect(res.data)
         } else {
           setErrors(res.data.errors)
@@ -39,9 +41,11 @@ function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, err
       .catch(error => console.log('api errors', error));
   };
   const redirect = (data) => {
-    // console.log(data)
-    setUser(data); 
+    console.log(exercises)
+    data.user.exercises = exercises;
     console.log(data)
+    setUser(data); 
+  
     navigate('/user', { state: data })
   };
   const handleErrors = () => {
@@ -96,7 +100,6 @@ function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, err
             <br></br>
             or <Link to='/signup'>Sign Up</Link>
           </div>
-          <button className=""></button>
         </form>
         </div>
         <div className="errors">
@@ -110,7 +113,6 @@ function Login({ cont, handleLogin, loggedInStatus, handleClick, isLoggedIn, err
           </li>
          </button>
       </div>
-
       <div/>
     </div>
   );
